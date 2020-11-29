@@ -13,7 +13,7 @@ void gotoxy(int x, int y)
 
 void paintTable()
 {
-    int totalSpace = 120, totalColun = 26, startPaint;
+    int totalSpace = 100, totalColun = 26, startPaint;
 
     gotoxy(0, 0);
     for (startPaint = 0; startPaint < totalSpace; startPaint++)
@@ -28,15 +28,15 @@ void paintTable()
     }
 
     for (startPaint = 1; startPaint <= totalColun; startPaint++) {
-        gotoxy(5, startPaint);
+        gotoxy(2, startPaint);
         printf("|");
-        gotoxy(115, startPaint);
+        gotoxy(97, startPaint);
         printf("|");
     }
 }
 
 void hotBooks() {
-    gotoxy(52, 15);
+    gotoxy(34, 15);
     printf("Nossos livros mais vendidos:");
 }
 

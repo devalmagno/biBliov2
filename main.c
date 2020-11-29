@@ -26,13 +26,13 @@ int main()
     textColor(4);
     paintTable();
 
-    gotoxy(50, 1);
+    gotoxy(30, 1);
     textColor(0);
     textBackground(4);
     printf("Bem vindo a BiBlio,");
-    gotoxy(55, 2);
+    gotoxy(35, 2);
     printf("a sua biblioteca do terminal!\n");
-    gotoxy(60, 25);
+    gotoxy(45, 25);
     printf("biBlio v2.0");
 
     textColor(12);
@@ -43,16 +43,16 @@ int main()
     textBackground(0);
     while (cOption != ESC)
     {
-        gotoxy(55, 6);
+        gotoxy(37, 6);
         printf("Como deseja continuar?");
-        gotoxy(55, 8);
+        gotoxy(37, 8);
         printf("[ ] - Cliente");
-        gotoxy(55, 9);
+        gotoxy(37, 9);
         printf("[ ] - Administrador");
-        gotoxy(55, 11);
+        gotoxy(37, 11);
         printf("Para SAIR aperte ESC.");
 
-        gotoxy(56, 8);
+        gotoxy(38, 8);
         while (cOption != ENTER)
         {
             cOption = getch();
@@ -60,13 +60,13 @@ int main()
 
             if (cOption == KEYDOWN)
             {
-                gotoxy(56, 9);
+                gotoxy(38, 9);
                 option = 1;
             }
 
             if (cOption == KEYUP)
             {
-                gotoxy(56, 8);
+                gotoxy(38, 8);
                 option = 2;
             }
 
