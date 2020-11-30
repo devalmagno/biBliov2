@@ -175,3 +175,7 @@ void buyList()
     gotoxy(87, 14);
     printf("R$ 36.99");
 }
+
+void routes(int option) {
+
+}
