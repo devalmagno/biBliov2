@@ -1,9 +1,11 @@
 // BIBLIOTECAS
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 #include <windows.h>
 #include <conio.h>
 #include "functions.h"
+#include "book.h"
 
 #define WAIT sleep(2);
 #define CLEAR_SCREEN system("cls");
@@ -20,6 +22,10 @@ int main()
 {
     int option = 1;
     char cOption = ' ';
+
+    FILE *fp;
+
+    openBookArchive();
 
     while (cOption != ESC)
     {
@@ -92,10 +98,7 @@ int main()
 
             CLEAR_SCREEN;
 
-            textColor(4);
-            paintTable();
-            gotoxy(45, 25);
-            printf("biBlio v2.0");
+            addPageComponent();
 
             if (option == 1)
             {
@@ -147,13 +150,11 @@ int main()
                 {
                     CLEAR_SCREEN;
 
-                    textColor(4);
-                    paintTable();
-                    gotoxy(45, 25);
-                    printf("biBlio v2.0");
+                    addPageComponent();
 
                     while (option != 4)
                     {
+                        addPageComponent();
                         gotoxy(45, 1);
                         textColor(0);
                         textBackground(4);
@@ -179,6 +180,7 @@ int main()
                         printf("=");
 
                         option = selectRoute(11, 71, 7);
+                        routes(2, option);
                     }
                 }
                 else
@@ -195,6 +197,7 @@ int main()
         }
     }
 
+    closeBookArchive();
     gotoxy(1, 28);
     textColor(15);
     return 0;

@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <windows.h>
 #include <conio.h>
 #include "functions.h"
+#include "book.h"
 
 #define LEFTKEY 0x4B
 #define RIGHTKEY 0x4D
@@ -67,7 +69,7 @@ void textBackground(int iColor)
 
 int selectRoute(int start, int end, int y)
 {
-    int startPoint = start, endPoint = end, point;
+    int startPoint = start, endPoint = end, point = 11;
     char cOption = ' ';
 
     while (cOption != ENTER || cOption != ESC)
@@ -120,9 +122,11 @@ int selectRoute(int start, int end, int y)
 
         if (cOption == ENTER)
         {
-            return 4;
-            // if (point == 26) {
-            //     return 1;
+
+            if (point == 11)
+                return 1;
+            else
+                return 4;
             // } else if (point == 46) {
             //     return 2;
             // } else if (point == 66) {
@@ -176,6 +180,19 @@ void buyList()
     printf("R$ 36.99");
 }
 
-void routes(int option) {
+void routes(int panel, int option)
+{
+    if (panel == 2)
+    {
+        if (option == 1)
+            registerBook();
+    }
+}
 
+void addPageComponent()
+{
+    textColor(4);
+    paintTable();
+    gotoxy(45, 25);
+    printf("biBlio v2.0");
 }
