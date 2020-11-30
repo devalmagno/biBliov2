@@ -131,11 +131,66 @@ int main()
             else if (option == 2)
             {
                 // ADMINISTRADOR
-                gotoxy(37, 9);
-                printf("Area em construcao.\n");
+                int password = 123456, typedPassword = 0;
+
+                gotoxy(45, 1);
+                printf("[ADMINISTRADOR]");
+                gotoxy(35, 5);
+                textColor(8);
+                printf("Para continuar faca o login:");
+                gotoxy(35, 6);
+                printf("senha: ");
+                gotoxy(42, 6);
+                scanf("%d", &typedPassword);
+
+                if (password == typedPassword)
+                {
+                    CLEAR_SCREEN;
+
+                    textColor(4);
+                    paintTable();
+                    gotoxy(45, 25);
+                    printf("biBlio v2.0");
+
+                    while (option != 4)
+                    {
+                        gotoxy(45, 1);
+                        textColor(0);
+                        textBackground(4);
+                        printf("[ADMINISTRADOR]");
+                        
+                        gotoxy(35, 5);
+                        textBackground(0);
+                        textColor(8);
+                        printf("Escolha uma das opcoes para continuar: ");
+                        gotoxy(10, 7);
+                        printf("[ ] - Cadastrar |");
+                        gotoxy(30, 7);
+                        printf("[ ] - Remover  |");
+                        gotoxy(50, 7);
+                        printf("[ ] - Alterar |");
+                        gotoxy(70, 7);
+                        printf("[ ] - Ver catalogo");
+                        gotoxy(43, 9);
+                        printf("Para SAIR aperte ESC");
+
+                        gotoxy(11, 7);
+                        textColor(12);
+                        printf("=");
+
+                        option = selectRoute(11, 71, 7);
+                    }
+                }
+                else
+                {
+                    gotoxy(30, 8);
+                    printf("senha incorreta.");
+                    gotoxy(30, 10);
+                    system("pause");
+                }
+
                 cOption = ' ';
                 option = 1;
-                system("pause");
             }
         }
     }
