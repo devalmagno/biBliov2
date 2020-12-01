@@ -22,7 +22,7 @@ int registerPackages = 0;
 
 void registerBook()
 {
-    int registerLoop, i, j;
+    int registerLoop, loop, i, j, f;
 
     gotoxy(35, 11);
     printf("Quantos livros voce deseja cadastrar?  ");
@@ -46,9 +46,10 @@ void registerBook()
 
     fpBook = fopen("data.txt", "wb+");
 
-    for (i = 0; i < registerLoop; i++)
+    loop = registerLoop + registerPackages;
+
+    for (i = registerPackages; i < loop; i++)
     {
-        printf("%d %d", i, registerPackages + registerLoop);
         gotoxy(10, 5);
         textBackground(0);
         textColor(8);
@@ -114,11 +115,12 @@ void registerBook()
         gotoxy(20, 10);
         printf("                    ");
 
-        gotoxy(66, 7 + i);
+        f = 0;
+        gotoxy(66, 7 + f);
         printf("%s", bookName[i]);
-        gotoxy(86, 7 + i);
+        gotoxy(86, 7 + f);
         printf("%.2lf", bookPrice[i]);
-
+        f++;
         // fwrite(&B[i].bookName, sizeof(Book), strlen(B[i].bookName) - 1, fpBook);
         // fwrite(Book[i].authorName, 41, sizeof(Book[i].authorName), fpBook);
         // fwrite(Book[i].bookGenre, 41, sizeof(Book[i].bookGenre), fpBook);
@@ -135,14 +137,22 @@ void registerBook()
         gotoxy(20, 7);
     }
 
+    fwrite(&registerPackages, sizeof(registerPackages), 1, fpBook);
+
+    fwrite(&bookName, sizeof(char), 100, fpBook);
+    fwrite(&authorName, sizeof(char), 100, fpBook);
+    fwrite(&bookGenre, sizeof(char), 100, fpBook);
+    fwrite(&bookPrice, sizeof(double), 1, fpBook);
+    fwrite(&ID, sizeof(int), 1, fpBook);
+    fwrite(&exibir, sizeof(int), 1, fpBook);
+    fwrite(&buyNumber, sizeof(int), 1, fpBook);
+
     // fseek(fpBook, 0, SEEK_END);
-    fwrite(bookName, sizeof(char), 100, fpBook);
+    // fwrite(&bookName, sizeof(char), 100, fpBook);
     // fwrite(B[0].bookName, sizeof(Book), strlen(B[0].bookName) - 1, fpBook);
     // fwrite(B[0].bookName, sizeof(Book), 1, fpBook);
 
     // fwrite(&B, sizeof(Book), 100, fpBook);
-
-    fwrite(&registerPackages, sizeof(registerPackages), 1, fpBook);
 
     fclose(fpBook);
 
@@ -159,11 +169,18 @@ void readValues()
 
     if (fpBook != NULL)
     {
-        // fseek(fpBook, 0, SEEK_SET);
+        fseek(fpBook, 0, SEEK_SET);
         fread(&registerPackages, sizeof(int), 1, fpBook);
+        fread(&bookName, sizeof(char), 100, fpBook);
+        fread(&authorName, sizeof(char), 100, fpBook);
+        fread(&bookGenre, sizeof(char), 100, fpBook);
+        fread(&bookPrice, sizeof(double), 1, fpBook);
+        fread(&ID, sizeof(int), 1, fpBook);
+        fread(&exibir, sizeof(int), 1, fpBook);
+        fread(&buyNumber, sizeof(int), 1, fpBook);
+
         // fread(&B, sizeof(Book), 100, fpBook);
         // registerPackages = fgetc(fpBook);
-        fread(bookName, sizeof(char), 100, fpBook);
         // fread(B[0].bookName, sizeof(Book), strlen(B[0].bookName) - 1, fpBook);
         // fread(B[0].bookName, sizeof(Book), 1, fpBook);
 
@@ -205,7 +222,7 @@ void closeBookArchive()
 
 void showBooks()
 {
-    int i;
+    int i = 0;
 
     CLEAR_SCREEN;
     gotoxy(1, 1);
@@ -217,14 +234,69 @@ void showBooks()
     }
     else
     {
-        printf("%d\n", registerPackages);
+        // printf("%d\n", registerPackages);
         // printf("%d\n", Book[0].ID);
 
-        for (i = 0; i < registerPackages; i++)
-        {
-            printf("%s\n", bookName[i]);
-        }
-    }
+        // printf("%s\n", bookName[0]);
+        // printf("%s\n", bookName[1]);
 
-    system("pause");
+        CLEAR_SCREEN;
+
+        addPageComponent();
+
+        for (i = 0; i < registerPackages + 1; i++)
+        {
+            gotoxy(30, 5 + i);
+            printf("|");
+            gotoxy(55, 5 + i);
+            printf("|");
+            gotoxy(85, 5 + i);
+            printf("|");
+        }
+
+        gotoxy(5, 6);
+        printf("_________________________");
+        gotoxy(31, 6);
+        printf("________________________");
+        gotoxy(56, 6);
+        printf("______________________");
+        gotoxy(86, 6);
+        printf("___________");
+
+        gotoxy(10, 5);
+        textColor(13);
+        printf("TITULO");
+        gotoxy(35, 5);
+        printf("AUTOR");
+        gotoxy(60, 5);
+        printf("GENERO");
+        gotoxy(87, 5);
+        printf("PRECO");
+
+        i = 0;
+
+        while (registerPackages > i)
+        {
+            textColor(8);
+            gotoxy(11, 7 + i);
+            printf("%s\n", bookName[i]);
+            gotoxy(36, 7 + i);
+            printf("%s\n", authorName[i]);
+            gotoxy(61, 7 + i);
+            printf("%s\n", bookGenre[i]);
+            gotoxy(88, 7 + i);
+            printf("%.2lf\n", bookPrice[i]);
+            i++;
+        }
+
+        gotoxy(10, 15);
+        system("pause");
+        // for (i = 0; i <= registerPackages; i++)
+        // {
+        //     gotoxy(1, 2 + i);
+        //     printf("%s\n", bookName[i]);
+        //     system("pause");
+        //     return;
+        // }
+    }
 }
