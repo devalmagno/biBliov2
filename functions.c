@@ -5,6 +5,8 @@
 #include "functions.h"
 #include "book.h"
 
+#define CLEAR_SCREEN system("cls");
+
 #define LEFTKEY 0x4B
 #define RIGHTKEY 0x4D
 #define ENTER 13
@@ -69,7 +71,8 @@ void textBackground(int iColor)
 
 int selectRoute(int start, int end, int y)
 {
-    int startPoint = start, endPoint = end, point = 11;
+    int startPoint = start, endPoint = end, point;
+    point = start;
     char cOption = ' ';
 
     while (cOption != ENTER || cOption != ESC)
@@ -81,17 +84,17 @@ int selectRoute(int start, int end, int y)
             if (startPoint + 20 <= end)
             {
                 startPoint += 20;
-                gotoxy(startPoint - 20, 7);
+                gotoxy(startPoint - 20, y);
                 printf(" ");
-                gotoxy(startPoint, 7);
+                gotoxy(startPoint, y);
                 printf("=");
             }
             else
             {
-                gotoxy(startPoint, 7);
+                gotoxy(startPoint, y);
                 printf(" ");
                 startPoint = start;
-                gotoxy(startPoint, 7);
+                gotoxy(startPoint, y);
                 printf("=");
             }
 
@@ -103,17 +106,17 @@ int selectRoute(int start, int end, int y)
             if (endPoint - 20 >= start)
             {
                 endPoint -= 20;
-                gotoxy(endPoint + 20, 7);
+                gotoxy(endPoint + 20, y);
                 printf(" ");
-                gotoxy(endPoint, 7);
+                gotoxy(endPoint, y);
                 printf("=");
             }
             else
             {
-                gotoxy(endPoint, 7);
+                gotoxy(endPoint, y);
                 printf(" ");
                 endPoint = end;
-                gotoxy(endPoint, 7);
+                gotoxy(endPoint, y);
                 printf("=");
             }
 
@@ -129,11 +132,6 @@ int selectRoute(int start, int end, int y)
                 return 1;
             else
                 return 4;
-            // } else if (point == 46) {
-            //     return 2;
-            // } else if (point == 66) {
-            //     return 3;
-            // }
         }
 
         if (cOption == ESC)
@@ -184,16 +182,31 @@ void buyList()
 
 void routes(int panel, int option)
 {
-    if (panel == 2)
+    if (panel == 2 && option == 1)
     {
-        if (option == 1)
-            registerBook();
+        registerBook();
     }
 
-    if (panel == 1) {
+    CLEAR_SCREEN;
+
+    if (panel == 1)
+    {
         if (option == 1)
+        {
             showBooks();
+            
+            gotoxy(35, 22);
+            printf("[ ] - COMPRAR");
+            gotoxy(55, 22);
+            printf("[ ] - VOLTAR");
+            gotoxy(36, 22);
+            textColor(4);
+            printf("=");
+            selectRoute(36, 56, 22);
+        }
     }
+
+    CLEAR_SCREEN;
 }
 
 void addPageComponent()

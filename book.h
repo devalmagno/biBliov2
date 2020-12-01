@@ -16,3 +16,4 @@ void openBookArchive();
 void closeBookArchive();  
 void readValues();
 void showBooks();
+int compare();

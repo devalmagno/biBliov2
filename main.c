@@ -111,12 +111,11 @@ int main()
 
             CLEAR_SCREEN;
 
-            addPageComponent();
-
             if (option == 1)
             {
                 while (option != 4)
                 {
+                    addPageComponent();
                     // CLIENTE
                     gotoxy(45, 1);
                     printf("[CLIENTE]");
@@ -149,6 +148,8 @@ int main()
             {
                 // ADMINISTRADOR
                 int password = 123456, typedPassword = 0;
+
+                addPageComponent();
 
                 gotoxy(45, 1);
                 printf("[ADMINISTRADOR]");
