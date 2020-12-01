@@ -5,7 +5,9 @@
 
 #define CLEAR_SCREEN system("cls");
 
-FILE *fp;
+FILE *fpBook;
+
+int registerPackages = 0;
 
 void registerBook()
 {
@@ -33,6 +35,7 @@ void registerBook()
 
     for (i = 0; i < registerLoop; i++)
     {
+        printf("%d %d", i, registerPackages + registerLoop);
         gotoxy(10, 5);
         textBackground(0);
         textColor(8);
@@ -86,6 +89,8 @@ void registerBook()
 
         Book[i].ID = i;
         Book[i].exibir = 1;
+        Book[i].buyNumber = 0;
+        registerPackages++;
 
         gotoxy(20, 7);
         printf("                    ");
@@ -100,22 +105,68 @@ void registerBook()
         printf("%s", Book[i].bookName);
         gotoxy(86, 7 + i);
         printf("%.2lf", Book[i].bookPrice);
-        
+
+        // fwrite(Book[i].authorName, 41, sizeof(Book[i].authorName), fpBook);
+        // fwrite(Book[i].bookGenre, 41, sizeof(Book[i].bookGenre), fpBook);
+        // // fputs(Book[i].bookName, fpBook);
+        // // fputs(Book[i].authorName, fpBook);
+        // // fputs(Book[i].bookGenre, fpBook);
+        // // fputc(Book[i].bookPrice, fpBook);
+        // // fputc(Book[i].ID, fpBook);
+        // // fputc(Book[i].exibir, fpBook);
+        // // fputc(Book[i].buyNumber, fpBook);
+
+        // fputc(registerPackages, fpBook);
+
         gotoxy(20, 7);
     }
+
+    fpBook = fopen("data.txt", "wb+");
+    fwrite(&Book, sizeof(Book), 100, fpBook);
+    fwrite(&registerPackages,sizeof(registerPackages), 1, fpBook);
+
+    fclose(fpBook);
 
     gotoxy(30, 26);
     system("pause");
     CLEAR_SCREEN;
 }
 
+void readValues()
+{
+    int i;
+
+    // openBookArchive();
+
+    if (fpBook != NULL)
+    {
+        fread(&registerPackages, sizeof(int), 1, fpBook);
+        // registerPackages = fgetc(fpBook);
+        fread(&Book, sizeof(Book), 100, fpBook);
+
+        // for (i = 0; i < registerPackages; i++)
+        // {
+        //     // fread(&Book[i].authorName, sizeof(char), 41, fpBook);
+        //     // fread(&Book[i].bookGenre, sizeof(char), 41, fpBook);
+        //     // fread(&Book[i].bookPrice, sizeof(double), 1, fpBook);
+        //     // fread(&Book[i].ID, sizeof(int), 1, fpBook);
+        //     // fread(&Book[i].exibir, sizeof(int), 1, fpBook);
+        //     // fread(&Book[i].buyNumber, sizeof(int), 1, fpBook);
+
+        //     // fgets(Book[i].bookName, sizeof(Book[i].bookName), fpBook);
+        // }
+    }
+
+    // closeBookArchive();
+}
+
 void openBookArchive()
 {
-    fp = fopen("data.txt", "rb+");
-    if (fp == NULL)
+    fpBook = fopen("data.txt", "rb+");
+    if (fpBook == NULL)
     {
-        fp = fopen("data.txt", "wb+");
-        if (fp == NULL)
+        fpBook = fopen("data.txt", "wb+");
+        if (fpBook == NULL)
         {
             printf("Não foi possivel criar o arquivo de dados.\n");
             exit(1);
@@ -123,6 +174,33 @@ void openBookArchive()
     }
 }
 
-void closeBookArchive() {
-    fclose(fp);
+void closeBookArchive()
+{
+    fclose(fpBook);
+}
+
+void showBooks()
+{
+    int i;
+
+    CLEAR_SCREEN;
+    gotoxy(1, 1);
+
+    if (registerPackages == 0)
+    {
+        printf("Ainda nao ha livros para mostrar!");
+        return;
+    }
+    else
+    {
+        printf("%d\n", registerPackages);
+        printf("%d\n", Book[0].ID);
+
+        for (i = 0; i < registerPackages; i++)
+        {
+            printf("%s\n", Book[i].bookName);
+        }
+    }
+
+    system("pause");
 }

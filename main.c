@@ -24,8 +24,10 @@ int main()
     char cOption = ' ';
 
     FILE *fp;
-
+    
     openBookArchive();
+
+    readValues();
 
     while (cOption != ESC)
     {
@@ -126,6 +128,7 @@ int main()
                     printf("=");
 
                     option = selectRoute(start, end, 7);
+                    routes(1, option);
                 }
 
                 cOption = ' ';
@@ -159,7 +162,7 @@ int main()
                         textColor(0);
                         textBackground(4);
                         printf("[ADMINISTRADOR]");
-                        
+
                         gotoxy(35, 5);
                         textBackground(0);
                         textColor(8);

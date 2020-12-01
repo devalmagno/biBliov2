@@ -125,6 +125,8 @@ int selectRoute(int start, int end, int y)
 
             if (point == 11)
                 return 1;
+            else if (point == 26)
+                return 1;
             else
                 return 4;
             // } else if (point == 46) {
@@ -186,6 +188,11 @@ void routes(int panel, int option)
     {
         if (option == 1)
             registerBook();
+    }
+
+    if (panel == 1) {
+        if (option == 1)
+            showBooks();
     }
 }
 

@@ -5,10 +5,13 @@ typedef struct {
     double bookPrice;
     int ID;
     int exibir;
+    int buyNumber;
 } book;
 
-book Book[1000];
+book Book[100];
 
 void registerBook();      
 void openBookArchive();
 void closeBookArchive();  
+void readValues();
+void showBooks();
