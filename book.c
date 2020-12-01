@@ -1,11 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "functions.h"
 #include "book.h"
 
 #define CLEAR_SCREEN system("cls");
 
 FILE *fpBook;
+
+// Book B[100];
+
+char bookName[100][41];
+char authorName[100][41];
+char bookGenre[100][41];
+double bookPrice[100];
+int ID[100];
+int exibir[100];
+int buyNumber[100];
 
 int registerPackages = 0;
 
@@ -32,6 +43,8 @@ void registerBook()
     textColor(0);
     textBackground(4);
     printf("[CADASTRAR LIVRO]");
+
+    fpBook = fopen("data.txt", "wb+");
 
     for (i = 0; i < registerLoop; i++)
     {
@@ -79,17 +92,17 @@ void registerBook()
 
         gotoxy(20, 7);
         textColor(15);
-        scanf(" %[^\n]*%c\n ", &Book[i].bookName);
+        scanf(" %[^\n]*%c\n ", &bookName[i]);
         gotoxy(20, 8);
-        scanf(" %[^\n]*%c\n ", &Book[i].authorName);
+        scanf(" %[^\n]*%c\n ", &authorName[i]);
         gotoxy(20, 9);
-        scanf(" %[^\n]*%c\n ", &Book[i].bookGenre);
+        scanf(" %[^\n]*%c\n ", &bookGenre[i]);
         gotoxy(20, 10);
-        scanf("%lf", &Book[i].bookPrice);
+        scanf("%lf", &bookPrice[i]);
 
-        Book[i].ID = i;
-        Book[i].exibir = 1;
-        Book[i].buyNumber = 0;
+        ID[i] = i;
+        exibir[i] = 1;
+        buyNumber[i] = 0;
         registerPackages++;
 
         gotoxy(20, 7);
@@ -102,13 +115,14 @@ void registerBook()
         printf("                    ");
 
         gotoxy(66, 7 + i);
-        printf("%s", Book[i].bookName);
+        printf("%s", bookName[i]);
         gotoxy(86, 7 + i);
-        printf("%.2lf", Book[i].bookPrice);
+        printf("%.2lf", bookPrice[i]);
 
+        // fwrite(&B[i].bookName, sizeof(Book), strlen(B[i].bookName) - 1, fpBook);
         // fwrite(Book[i].authorName, 41, sizeof(Book[i].authorName), fpBook);
         // fwrite(Book[i].bookGenre, 41, sizeof(Book[i].bookGenre), fpBook);
-        // // fputs(Book[i].bookName, fpBook);
+        // fputs(&B[i].bookName, fpBook);
         // // fputs(Book[i].authorName, fpBook);
         // // fputs(Book[i].bookGenre, fpBook);
         // // fputc(Book[i].bookPrice, fpBook);
@@ -121,9 +135,14 @@ void registerBook()
         gotoxy(20, 7);
     }
 
-    fpBook = fopen("data.txt", "wb+");
-    fwrite(&Book, sizeof(Book), 100, fpBook);
-    fwrite(&registerPackages,sizeof(registerPackages), 1, fpBook);
+    // fseek(fpBook, 0, SEEK_END);
+    fwrite(bookName, sizeof(char), 100, fpBook);
+    // fwrite(B[0].bookName, sizeof(Book), strlen(B[0].bookName) - 1, fpBook);
+    // fwrite(B[0].bookName, sizeof(Book), 1, fpBook);
+
+    // fwrite(&B, sizeof(Book), 100, fpBook);
+
+    fwrite(&registerPackages, sizeof(registerPackages), 1, fpBook);
 
     fclose(fpBook);
 
@@ -136,28 +155,33 @@ void readValues()
 {
     int i;
 
-    // openBookArchive();
+    openBookArchive();
 
     if (fpBook != NULL)
     {
+        // fseek(fpBook, 0, SEEK_SET);
         fread(&registerPackages, sizeof(int), 1, fpBook);
+        // fread(&B, sizeof(Book), 100, fpBook);
         // registerPackages = fgetc(fpBook);
-        fread(&Book, sizeof(Book), 100, fpBook);
+        fread(bookName, sizeof(char), 100, fpBook);
+        // fread(B[0].bookName, sizeof(Book), strlen(B[0].bookName) - 1, fpBook);
+        // fread(B[0].bookName, sizeof(Book), 1, fpBook);
 
-        // for (i = 0; i < registerPackages; i++)
-        // {
-        //     // fread(&Book[i].authorName, sizeof(char), 41, fpBook);
-        //     // fread(&Book[i].bookGenre, sizeof(char), 41, fpBook);
-        //     // fread(&Book[i].bookPrice, sizeof(double), 1, fpBook);
-        //     // fread(&Book[i].ID, sizeof(int), 1, fpBook);
-        //     // fread(&Book[i].exibir, sizeof(int), 1, fpBook);
-        //     // fread(&Book[i].buyNumber, sizeof(int), 1, fpBook);
+        for (i = 0; i < registerPackages; i++)
+        {
+            // fread(&B[i].bookName, sizeof(Book), strlen(B[i].bookName) - 1, fpBook);
+            // fread(&Book[i].authorName, sizeof(char), 41, fpBook);
+            // fread(&Book[i].bookGenre, sizeof(char), 41, fpBook);
+            // fread(&Book[i].bookPrice, sizeof(double), 1, fpBook);
+            // fread(&Book[i].ID, sizeof(int), 1, fpBook);
+            // fread(&Book[i].exibir, sizeof(int), 1, fpBook);
+            // fread(&Book[i].buyNumber, sizeof(int), 1, fpBook);
 
-        //     // fgets(Book[i].bookName, sizeof(Book[i].bookName), fpBook);
-        // }
+            // fgets(&B[i].bookName, sizeof(Book), fpBook);
+        }
     }
 
-    // closeBookArchive();
+    closeBookArchive();
 }
 
 void openBookArchive()
@@ -194,11 +218,11 @@ void showBooks()
     else
     {
         printf("%d\n", registerPackages);
-        printf("%d\n", Book[0].ID);
+        // printf("%d\n", Book[0].ID);
 
         for (i = 0; i < registerPackages; i++)
         {
-            printf("%s\n", Book[i].bookName);
+            printf("%s\n", bookName[i]);
         }
     }
 

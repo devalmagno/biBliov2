@@ -24,8 +24,19 @@ int main()
     char cOption = ' ';
 
     FILE *fp;
-    
+
     openBookArchive();
+
+    fp = fopen("data.txt", "rb+");
+    if (fp == NULL)
+    {
+        fp = fopen("data.txt", "wb+");
+        if (fp == NULL)
+        {
+            printf("Nao foi possivel criar data.txt!\n");
+            exit(1);
+        }
+    }
 
     readValues();
 
@@ -200,6 +211,7 @@ int main()
         }
     }
 
+    fclose(fp);
     closeBookArchive();
     gotoxy(1, 28);
     textColor(15);
