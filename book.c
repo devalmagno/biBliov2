@@ -16,6 +16,7 @@ char bookGenre[100][41];
 double bookPrice[100];
 int ID[100];
 int exibir[100];
+int myCart[100];
 int buyNumber[100];
 
 int registerPackages = 0;
@@ -106,6 +107,7 @@ void registerBook()
         ID[i] = i;
         exibir[i] = 1;
         buyNumber[i] = 0;
+        myCart[i] = 0;
         registerPackages++;
 
         gotoxy(20, 7);
@@ -122,18 +124,6 @@ void registerBook()
         gotoxy(86, 7 + f);
         printf("%.2lf", bookPrice[i]);
         f++;
-        // fwrite(&B[i].bookName, sizeof(Book), strlen(B[i].bookName) - 1, fpBook);
-        // fwrite(Book[i].authorName, 41, sizeof(Book[i].authorName), fpBook);
-        // fwrite(Book[i].bookGenre, 41, sizeof(Book[i].bookGenre), fpBook);
-        // fputs(&B[i].bookName, fpBook);
-        // // fputs(Book[i].authorName, fpBook);
-        // // fputs(Book[i].bookGenre, fpBook);
-        // // fputc(Book[i].bookPrice, fpBook);
-        // // fputc(Book[i].ID, fpBook);
-        // // fputc(Book[i].exibir, fpBook);
-        // // fputc(Book[i].buyNumber, fpBook);
-
-        // fputc(registerPackages, fpBook);
 
         gotoxy(20, 7);
     }
@@ -147,13 +137,7 @@ void registerBook()
     fwrite(&ID, sizeof(int), 100, fpBook);
     fwrite(&exibir, sizeof(int), 100, fpBook);
     fwrite(&buyNumber, sizeof(int), 100, fpBook);
-
-    // fseek(fpBook, 0, SEEK_END);
-    // fwrite(&bookName, sizeof(char), 100, fpBook);
-    // fwrite(B[0].bookName, sizeof(Book), strlen(B[0].bookName) - 1, fpBook);
-    // fwrite(B[0].bookName, sizeof(Book), 1, fpBook);
-
-    // fwrite(&B, sizeof(Book), 100, fpBook);
+    fwrite(&myCart, sizeof(int), 100, fpBook);
 
     fclose(fpBook);
 
@@ -179,6 +163,7 @@ void readValues()
         fread(&ID, sizeof(int), 100, fpBook);
         fread(&exibir, sizeof(int), 100, fpBook);
         fread(&buyNumber, sizeof(int), 100, fpBook);
+        fread(&myCart, sizeof(int), 100, fpBook);
 
         // fread(&B, sizeof(Book), 100, fpBook);
         // registerPackages = fgetc(fpBook);
@@ -223,20 +208,12 @@ void closeBookArchive()
 
 void showBooks()
 {
-    int i = 0;
+    int i = 0, printBookPosition = 0;
     // printf("%d\n", registerPackages);
     // printf("%d\n", Book[0].ID);
 
     // printf("%s\n", bookName[0]);
     // printf("%s\n", bookName[1]);
-
-    CLEAR_SCREEN;
-
-    addPageComponent();
-    gotoxy(45, 1);
-    textColor(0);
-    textBackground(4);
-    printf("[LIVROS]");
 
     textBackground(0);
     textColor(6);
@@ -289,18 +266,20 @@ void showBooks()
         if (exibir[i] != 0)
         {
             textColor(8);
-            gotoxy(7, 7 + i);
+            gotoxy(7, 7 + printBookPosition);
             printf("%s\n", bookName[i]);
-            gotoxy(33, 7 + i);
+            gotoxy(33, 7 + printBookPosition);
             printf("%s\n", authorName[i]);
-            gotoxy(57, 7 + i);
+            gotoxy(57, 7 + printBookPosition);
             printf("%s\n", bookGenre[i]);
-            gotoxy(77, 7 + i);
+            gotoxy(77, 7 + printBookPosition);
             printf("R$ %.2lf\n", bookPrice[i]);
-            gotoxy(87, 7 + i);
+            gotoxy(87, 7 + printBookPosition);
             printf("%d\n", ID[i]);
-            i++;
+
+            printBookPosition++;
         }
+        i++;
     }
     // for (i = 0; i <= registerPackages; i++)
     // {
@@ -309,4 +288,316 @@ void showBooks()
     //     system("pause");
     //     return;
     // }
+}
+
+void searchBook()
+{
+    int i, j, foundBook = 0, otherBooks = 0;
+    char pesquisa[41];
+
+    addPageComponent();
+    gotoxy(40, 1);
+    textColor(0);
+    textBackground(4);
+    printf("[PESQUISAR LIVRO]");
+
+    textBackground(0);
+    textColor(7);
+
+    if (registerPackages == 0)
+    {
+        printf("Sem livros no catalogo.");
+    }
+    else
+    {
+        gotoxy(30, 4);
+        printf("Digite um nome para pesquisar:");
+        gotoxy(65, 4);
+        scanf(" %[^\n]*%c\n ", &pesquisa);
+
+        gotoxy(29, 4);
+        printf("                                                    ");
+        for (i = 0; i < registerPackages; i++)
+        {
+            if (strcmp(bookName[i], pesquisa) == 0)
+            {
+                gotoxy(35, 4);
+                printf("Livro encontrado com sucesso!\n\n");
+
+                gotoxy(10, 6);
+                printf("Nome do livro: %s", bookName[i]);
+                gotoxy(10, 7);
+                printf("Autor: %s", authorName[i]);
+                gotoxy(10, 8);
+                printf("Genero: %s", bookGenre[i]);
+                gotoxy(10, 9);
+                printf("Preco: R$ %.2lf", bookPrice[i]);
+                gotoxy(10, 10);
+                printf("ID: %d", ID[i]);
+
+                // for (j = 0; j < registerPackages; j++)
+                // {
+                //     if (strcmp(authorName[i], authorName[j]))
+                //     {
+                //         gotoxy(75, 8 + otherBooks);
+                //         printf("%s", bookName[j]);
+                //         otherBooks++;
+                //     }
+                // }
+
+                // if (otherBooks > 0)
+                // {
+                //     gotoxy(70, 6);
+                //     printf("Outros livros de %s: ", authorName[i]);
+                // } else {
+                //     gotoxy(70, 6);
+                //     printf("O autor só possui essa obra no sistema.");
+                // }
+
+                foundBook = 1;
+            }
+        }
+
+        optionsMenu();
+
+        if (!foundBook)
+        {
+            gotoxy(38, 4);
+            printf("Nao encontrei %s.\n\n", pesquisa);
+            gotoxy(30, 6);
+            system("pause");
+            return;
+        }
+    }
+}
+
+void optionsMenu()
+{
+    int option;
+
+    gotoxy(35, 22);
+    printf("[ ] - COMPRAR");
+    gotoxy(55, 22);
+    printf("[ ] - VOLTAR");
+    gotoxy(36, 22);
+    textColor(4);
+    printf("=");
+    option = selectRoute(36, 56, 22);
+
+    if (option == 2)
+        return;
+
+    CLEAR_SCREEN;
+    buyBook();
+}
+
+void buyBook()
+{
+    int bookID, option;
+    addPageComponent();
+    gotoxy(45, 1);
+    textColor(0);
+    textBackground(4);
+    printf("[COMPRAR]");
+
+    showBooks();
+    gotoxy(38, 15);
+    textBackground(0);
+    textColor(7);
+    printf("Digite o ID do livro: ");
+    gotoxy(62, 15);
+    scanf("%d", &bookID);
+
+    gotoxy(35, 17);
+    printf("%s", bookName[bookID]);
+    gotoxy(60, 17);
+    printf("R$ %2.lf", bookPrice[bookID]);
+
+    gotoxy(35, 22);
+    printf("[ ] - COMPRAR");
+    gotoxy(55, 22);
+    printf("[ ] - VOLTAR");
+    gotoxy(36, 22);
+    textColor(4);
+    printf("=");
+    option = selectRoute(36, 56, 22);
+
+    if (option == 2)
+        return;
+
+    myCart[bookID] = 1;
+
+    gotoxy(35, 18);
+    printf("Compra realizada com sucesso.");
+    gotoxy(30, 19);
+    system("pause");
+    return;
+}
+
+void buyList()
+{
+    int i, inMyCart = 0;
+
+    gotoxy(10, 12);
+    textColor(12);
+    printf("Meu carrinho:");
+    gotoxy(10, 13);
+    textColor(6);
+
+    for (i = 0; i < 10; i++)
+    {
+        gotoxy(30, 13 + i);
+        printf("|");
+        gotoxy(55, 13 + i);
+        printf("|");
+        gotoxy(85, 13 + i);
+        printf("|");
+    }
+
+    gotoxy(10, 13);
+    printf("TITULO");
+    gotoxy(35, 13);
+    printf("AUTOR");
+    gotoxy(60, 13);
+    printf("GENERO");
+    gotoxy(87, 13);
+    printf("PRECO");
+
+    for (i = 0; i < registerPackages; i++)
+    {
+        if (myCart[i] == 1)
+        {
+            gotoxy(10, 14 + inMyCart);
+            printf("%s", bookName[i]);
+            gotoxy(35, 14 + inMyCart);
+            printf("%s", authorName[i]);
+            gotoxy(60, 14 + inMyCart);
+            printf("%s", bookGenre[i]);
+            gotoxy(87, 14 + inMyCart);
+            printf("R$ %.2lf", bookPrice[i]);
+            inMyCart++;
+        }
+    }
+}
+
+void removeBook() {
+    int bookID, option;
+
+    CLEAR_SCREEN;
+
+    addPageComponent();
+    gotoxy(45, 1);
+    textColor(0);
+    textBackground(4);
+    printf("[REMOVER]");
+
+    showBooks();
+    gotoxy(38, 15);
+    textBackground(0);
+    textColor(7);
+    printf("Digite o ID do livro: ");
+    gotoxy(62, 15);
+    scanf("%d", &bookID);
+
+    gotoxy(35, 17);
+    printf("%s", bookName[bookID]);
+    gotoxy(60, 17);
+    printf("R$ %2.lf", bookPrice[bookID]);
+
+    gotoxy(35, 22);
+    printf("[ ] - REMOVER");
+    gotoxy(55, 22);
+    printf("[ ] - VOLTAR");
+    gotoxy(36, 22);
+    textColor(4);
+    printf("=");
+    option = selectRoute(36, 56, 22);
+
+    if (option == 2)
+        return;
+
+    exibir[bookID] = 0;
+
+    fpBook = fopen("data.txt", "wb+");
+
+    fwrite(&exibir, sizeof(int), 100, fpBook);
+
+    fclose(fpBook);
+
+    gotoxy(35, 18);
+    printf("Livro removido com sucesso.");
+    gotoxy(30, 19);
+    system("pause");
+    return;
+}
+
+void changeBook() {
+    int bookID, option;
+
+    CLEAR_SCREEN;
+
+    addPageComponent();
+    gotoxy(45, 1);
+    textColor(0);
+    textBackground(4);
+    printf("[ALTERAR]");
+
+    showBooks();
+    gotoxy(38, 15);
+    textBackground(0);
+    textColor(7);
+    printf("Digite o ID do livro: ");
+    gotoxy(62, 15);
+    scanf("%d", &bookID);
+
+    gotoxy(25, 17);
+    printf("%s", bookName[bookID]);
+    gotoxy(45, 17);
+    printf("Preco antigo: R$ %2.lf", bookPrice[bookID]);
+    gotoxy(65, 17);
+    printf("Preco novo: R$");
+
+    gotoxy(35, 22);
+    printf("[ ] - ALTERAR");
+    gotoxy(55, 22);
+    printf("[ ] - VOLTAR");
+    gotoxy(36, 22);
+    textColor(4);
+    printf("=");
+    option = selectRoute(36, 56, 22);
+
+    if (option == 2)
+        return;
+
+    gotoxy(80, 17);
+    scanf("%lf", &bookPrice[bookID]);
+
+    // fpBook = fopen("data.txt", "wb+");
+
+    fwrite(&bookPrice, sizeof(double), 100, fpBook);
+
+    // fclose(fpBook);
+
+    gotoxy(35, 18);
+    printf("Livro alterado com sucesso.");
+    gotoxy(30, 19);
+    system("pause");
+    return;
+}
+
+void saveBook() {
+    fpBook = fopen("data.txt", "wb+");
+
+    fwrite(&registerPackages, sizeof(registerPackages), 1, fpBook);
+
+    fwrite(&bookName, sizeof(char), 100, fpBook);
+    fwrite(&authorName, sizeof(char), 100, fpBook);
+    fwrite(&bookGenre, sizeof(char), 100, fpBook);
+    fwrite(&bookPrice, sizeof(double), 100, fpBook);
+    fwrite(&ID, sizeof(int), 100, fpBook);
+    fwrite(&exibir, sizeof(int), 100, fpBook);
+    fwrite(&buyNumber, sizeof(int), 100, fpBook);
+    fwrite(&myCart, sizeof(int), 100, fpBook);
+
+    fclose(fpBook);
 }

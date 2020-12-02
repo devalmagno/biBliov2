@@ -212,6 +212,7 @@ int main()
         }
     }
 
+    saveBook();
     fclose(fp);
     closeBookArchive();
     gotoxy(1, 28);

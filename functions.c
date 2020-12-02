@@ -126,10 +126,14 @@ int selectRoute(int start, int end, int y)
         if (cOption == ENTER)
         {
 
-            if (point == 11)
+            if (point == 11 || point == 26 || point == 36)
                 return 1;
-            else if (point == 26)
-                return 1;
+            else if (point == 46 || point == 56 || point == 31)
+                return 2;
+            else if (point == 66 || point == 51)
+                return 3;
+            else if (point == 71)
+                return 5;
             else
                 return 4;
         }
@@ -141,50 +145,31 @@ int selectRoute(int start, int end, int y)
     }
 }
 
-void buyList()
-{
-    int i;
-
-    gotoxy(10, 12);
-    textColor(12);
-    printf("Meu carrinho:");
-    gotoxy(10, 13);
-    textColor(6);
-
-    for (i = 0; i < 10; i++)
-    {
-        gotoxy(30, 13 + i);
-        printf("|");
-        gotoxy(55, 13 + i);
-        printf("|");
-        gotoxy(85, 13 + i);
-        printf("|");
-    }
-
-    gotoxy(10, 13);
-    printf("TITULO");
-    gotoxy(35, 13);
-    printf("AUTOR");
-    gotoxy(60, 13);
-    printf("GENERO");
-    gotoxy(87, 13);
-    printf("PRECO");
-
-    gotoxy(10, 14);
-    printf("O Nome do Vento");
-    gotoxy(35, 14);
-    printf("Patrick Rothfulls");
-    gotoxy(60, 14);
-    printf("fantasia, aventura");
-    gotoxy(87, 14);
-    printf("R$ 36.99");
-}
-
 void routes(int panel, int option)
 {
     if (panel == 2 && option == 1)
     {
         registerBook();
+    }
+
+    if (panel == 2)
+    {
+        if (option == 2)
+            removeBook();
+        else if (option == 3)
+            changeBook();
+        else if (option == 5)
+        {
+            CLEAR_SCREEN;
+            addPageComponent();
+
+            gotoxy(45, 1);
+            printf("[ADMINISTRADOR]");
+            gotoxy(35, 5);
+            showBooks();
+            gotoxy(30, 18);
+            system("pause");
+        }
     }
 
     CLEAR_SCREEN;
@@ -193,17 +178,19 @@ void routes(int panel, int option)
     {
         if (option == 1)
         {
+            addPageComponent();
+            gotoxy(45, 1);
+            textColor(0);
+            textBackground(4);
+            printf("[LIVROS]");
             showBooks();
-            
-            gotoxy(35, 22);
-            printf("[ ] - COMPRAR");
-            gotoxy(55, 22);
-            printf("[ ] - VOLTAR");
-            gotoxy(36, 22);
-            textColor(4);
-            printf("=");
-            selectRoute(36, 56, 22);
+
+            optionsMenu();
         }
+        else if (option == 2)
+            searchBook();
+        else if (option == 3)
+            buyBook();
     }
 
     CLEAR_SCREEN;
