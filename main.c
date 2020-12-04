@@ -58,7 +58,7 @@ int main()
 
         textColor(12);
         textBackground(0);
-        hotBooks();
+        // hotBooks();
 
         textColor(8);
         textBackground(0);

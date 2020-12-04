@@ -358,16 +358,16 @@ void searchBook()
             }
         }
 
-        optionsMenu();
-
         if (!foundBook)
         {
-            gotoxy(38, 4);
+            gotoxy(41, 4);
             printf("Nao encontrei %s.\n\n", pesquisa);
-            gotoxy(30, 6);
+            gotoxy(25, 6);
             system("pause");
             return;
         }
+
+        optionsMenu();
     }
 }
 
@@ -426,6 +426,7 @@ void buyBook()
         return;
 
     myCart[bookID] = 1;
+    buyNumber[bookID] += 1;
 
     gotoxy(35, 18);
     printf("Compra realizada com sucesso.");
@@ -480,7 +481,8 @@ void buyList()
     }
 }
 
-void removeBook() {
+void removeBook()
+{
     int bookID, option;
 
     CLEAR_SCREEN;
@@ -531,7 +533,8 @@ void removeBook() {
     return;
 }
 
-void changeBook() {
+void changeBook()
+{
     int bookID, option;
 
     CLEAR_SCREEN;
@@ -585,7 +588,8 @@ void changeBook() {
     return;
 }
 
-void saveBook() {
+void saveBook()
+{
     fpBook = fopen("data.txt", "wb+");
 
     fwrite(&registerPackages, sizeof(registerPackages), 1, fpBook);
@@ -601,3 +605,51 @@ void saveBook() {
 
     fclose(fpBook);
 }
+
+// void hotBooks()
+// {
+//     int i, j, recordSales, secondInSales, thirdInSales;
+
+//     gotoxy(34, 15);
+//     printf("Nossos livros mais vendidos:");
+
+//     for (i = 0; i < registerPackages; i++)
+//     {
+//         for (j = 1; j < registerPackages; j++)
+//         {
+//             if (buyNumber[i] > buyNumber[j])
+//             {
+//                 recordSales = i;
+//                 secondInSales = j;
+//             }
+//             else
+//             {
+//                 recordSales = j;
+//                 secondInSales = i;
+//             }
+
+//             if (secondInSales > buyNumber[i])
+//             {
+//                 thirdInSales = i;
+//             }
+//         }
+//     }
+
+//     if (buyNumber[recordSales] != 0)
+//     {
+//         gotoxy(30, 16);
+//         printf("%s RECORDE DE VENDAS com %d unidades vendidas.", bookName[recordSales], buyNumber[recordSales]);
+//     }
+
+//     if (buyNumber[secondInSales] != 0)
+//     {
+//         gotoxy(30, 17);
+//         printf("%s SEGUNDO LUGAR com %d unidades vendidas.", bookName[secondInSales], buyNumber[secondInSales]);
+//     }
+
+//     if (buyNumber[thirdInSales] != 0)
+//     {
+//         gotoxy(30, 18);
+//         printf("%s TERCEIRO LUGAR com %d unidades vendidas.", bookName[thirdInSales], buyNumber[thirdInSales]);
+//     }
+// }

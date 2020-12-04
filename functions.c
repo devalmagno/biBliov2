@@ -45,12 +45,6 @@ void paintTable()
     }
 }
 
-void hotBooks()
-{
-    gotoxy(34, 15);
-    printf("Nossos livros mais vendidos:");
-}
-
 void textColor(int iColor)
 {
     HANDLE hl = GetStdHandle(STD_OUTPUT_HANDLE);

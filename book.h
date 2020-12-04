@@ -23,3 +23,4 @@ void buyList();
 void removeBook();
 void changeBook();
 void saveBook();
+// void hotBooks();
